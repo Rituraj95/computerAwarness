@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Computer Awareness</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f7fb;
+        color: #1f2937;
+        min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        padding: 20px 7%;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    header h2 {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    /* Main Container */
+    .container {
+        width: 90%;
+        max-width: 1050px;
+        margin: 45px auto;
+    }
+
+    /* Heading */
+    .heading {
+        margin-bottom: 28px;
+    }
+
+    .heading h1 {
+        font-size: 30px;
+        margin-bottom: 8px;
+        color: #111827;
+    }
+
+    .heading p {
+        color: #6b7280;
+        font-size: 15px;
+    }
+
+    /* Topic Grid */
+    .topics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    /* Test Card */
+    .full-test {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        transition: 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .full-test::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #2563eb, #60a5fa);
+    }
+
+    .full-test:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+        border-color: #bfdbfe;
+    }
+
+    /* Icon */
+    .test-icon {
+        width: 52px;
+        height: 52px;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+
+    .full-test h2 {
+        font-size: 20px;
+        margin-bottom: 9px;
+        color: #111827;
+    }
+
+    .full-test p {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* Button */
+    .full-test a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        padding: 11px 17px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .full-test a:hover {
+        background: #1d4ed8;
+        transform: translateX(2px);
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 13px;
+        padding: 35px 20px;
+        margin-top: 40px;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+
+        header {
+            padding: 17px 5%;
+        }
+
+        header h2 {
+            font-size: 19px;
+        }
+
+        .container {
+            width: 92%;
+            margin: 30px auto;
+        }
+
+        .heading h1 {
+            font-size: 24px;
+        }
+
+        .heading p {
+            font-size: 14px;
+        }
+
+        .full-test {
+            padding: 22px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>💻 Computer Awareness</h2>
+</header>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Computer Awareness Mock Tests</h1>
+        <p>Select a topic and start practicing.</p>
+    </div>
+
+    <div class="topics">
+
+        <div class="full-test">
+
+            <div class="test-icon">
+                💻
+            </div>
+
+            <h2>Computer History</h2>
+
+            <p>
+                Practice questions based on computer generations,
+                microprocessors, memory, VLSI, and other computer history topics.
+            </p>
+
+            <a href="computerhistory1.html">
+                Start Test →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    Computer Awareness © 2026
+</footer>
+
+</body>
+</html>

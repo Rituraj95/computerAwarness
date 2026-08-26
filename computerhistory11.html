@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Generations - Mock Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 1.05em;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .option.correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .option.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .feedback.incorrect {
+            background: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-prev {
+            background: #757575;
+            color: white;
+        }
+
+        .btn-prev:hover {
+            background: #616161;
+            transform: translateX(-3px);
+        }
+
+        .btn-prev:disabled {
+            background: #bdbdbd;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            transform: translateX(3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .results h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .results p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1em;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .counter {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ Computer Generations Quiz</h1>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="counter"><span class="current-question">1</span> / <span class="total-questions">30</span></div>
+
+            <!-- Questions will be inserted here by JavaScript -->
+            <div id="questions-container"></div>
+
+            <!-- Results Section -->
+            <div class="results" id="results">
+                <div class="score-circle" id="score-display">0/30</div>
+                <h2>Quiz Completed!</h2>
+                <p id="result-message"></p>
+                <button class="btn-restart" onclick="restartQuiz()">Restart Quiz</button>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="button-group" id="button-group">
+                <button class="btn-prev" id="prev-btn" onclick="previousQuestion()" disabled>← Previous</button>
+                <button class="btn-next" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                question: "The generation based on VLSI microprocessor architecture?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 3
+            },
+            {
+                id: 2,
+                question: "______ generation of computer started with using vacuum tubes as the basic component?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 0
+            },
+            {
+                id: 3,
+                question: "Batch processing was mainly used in the ______ generation?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 0
+            },
+            {
+                id: 4,
+                question: "In which generation Time-sharing, Real-time, Multiprogramming, Distributed Operating System were used?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 3
+            },
+            {
+                id: 5,
+                question: "The period of ______ generation was 1957–1963?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 1
+            },
+            {
+                id: 6,
+                question: "In which generation of computer microprocessors were introduced?",
+                options: ["1st", "2nd", "3rd", "4th", "None of these"],
+                correct: 3
+            },
+            {
+                id: 7,
+                question: "The major talking point of fifth generation computers was?",
+                options: ["VLSI", "Artificial Intelligence", "System processing", "System knowledge", "None of these"],
+                correct: 1
+            },
+            {
+                id: 8,
+                question: "Which of the following is the technological advancement in the field of computers through years?",
+                options: ["Growth", "Evolution", "Generation", "Development", "None of these"],
+                correct: 2
+            },
+            {
+                id: 9,
+                question: "A typical modern computer uses?",
+                options: ["Magnetic core for secondary storage", "LSI chips", "Magnetic tape for primary memory", "More than 10,000 vacuum tubes", "None of these"],
+                correct: 1
+            },
+            {
+                id: 10,
+                question: "The processing speed of first generation computers was?",
+                options: ["Milliseconds", "Microseconds", "Nanoseconds", "Picoseconds", "None of these"],
+                correct: 0
+            },
+            {
+                id: 11,
+                question: "In Inter-generation computer, the instructions are executed?",
+                options: ["Parallel only", "Sequentially only", "Both sequentially and parallel", "All of above", "None of these"],
+                correct: 2
+            },
+            {
+                id: 12,
+                question: "Fifth generation computer is also known as?",
+                options: ["Knowledge information processing system", "Very large scale integration", "ULSI", "All of these", "None of these"],
+                correct: 0
+            },
+            {
+                id: 13,
+                question: "Name the first Microprocessor?",
+                options: ["Intel 3003", "Intel 4004", "Intel 5009", "Intel 7007", "None of these"],
+                correct: 1
+            },
+            {
+                id: 14,
+                question: "Who invented Integrated Circuits?",
+                options: ["Jack Kilby", "Robert Noyce", "Both of these", "John Von Neumann", "None of these"],
+                correct: 2
+            },
+            {
+                id: 15,
+                question: "Integrated Circuits are mainly made of?",
+                options: ["Copper", "Silicon", "Germanium", "All of these", "None of these"],
+                correct: 1
+            },
+            {
+                id: 16,
+                question: "Which one is the first computer to use Stored Program Concept?",
+                options: ["UNIVAC", "EDSAC", "ENIAC", "All of these", "None of the above"],
+                correct: 1
+            },
+            {
+                id: 17,
+                question: "Select the name of generation in which the Operating system was used the first time?",
+                options: ["First Generation", "Third Generation", "Second Generation", "Fourth Generation", "None of these"],
+                correct: 1
+            },
+            {
+                id: 18,
+                question: "Select the name of generation that used CD ROM for the first time?",
+                options: ["First Generation", "Third Generation", "Second Generation", "Fifth Generation", "None of these"],
+                correct: 3
+            },
+            {
+                id: 19,
+                question: "Which of the following is NOT associated with fifth generation of computer?",
+                options: ["ULSI", "GUI system", "Electronic-commerce", "WWW", "None of these"],
+                correct: 1
+            },
+            {
+                id: 20,
+                question: "Apple computers were first developed in the 1970s. Who invented the first Apple computer?",
+                options: ["Bill Gates", "John von Neumann", "Steve Wozniak", "Larry Page", "None of these"],
+                correct: 2
+            },
+            {
+                id: 21,
+                question: "Which of the following statements is CORRECT?",
+                options: ["Tablet computer is a kind of microcomputer.", "Minicomputer is a class of multicomputer.", "Mainframe computer's speed is measured in MIPS (Millions of Instructions per Second).", "All of the above", "None of these"],
+                correct: 3
+            },
+            {
+                id: 22,
+                question: "Which generation of computer used Quantum technology?",
+                options: ["First Generation", "Third Generation", "Fifth Generation", "Sixth Generation", "None of these"],
+                correct: 3
+            },
+            {
+                id: 23,
+                question: "How many vacuum tubes used in first generation computer ENIAC?",
+                options: ["1800", "18000", "1024", "512", "None of these"],
+                correct: 1
+            },
+            {
+                id: 24,
+                question: "What is used in first generation for storage?",
+                options: ["Magnetic Drum", "IC", "Vacuum Tube", "Floppy Disk", "None of these"],
+                correct: 0
+            },
+            {
+                id: 25,
+                question: "Microprocessor is a switching device used for which generation computer?",
+                options: ["First Generation", "Second Generation", "Third Generation", "Fourth Generation", "None of these"],
+                correct: 3
+            },
+            {
+                id: 26,
+                question: "During the second generation, the aim of computer was to replace vacuum tubes with?",
+                options: ["ICs", "Semiconductors", "Transistors", "Microprocessor", "None of these"],
+                correct: 2
+            },
+            {
+                id: 27,
+                question: "Which language was used by the second generation of computers?",
+                options: ["Assembly language", "Machine language", "Low-level language", "High-level language", "None of these"],
+                correct: 0
+            },
+            {
+                id: 28,
+                question: "Which electronic components are used in fifth generation computers?",
+                options: ["Transistors", "Integrated Circuits", "Vacuum Tubes", "ULSI Microprocessor", "None of these"],
+                correct: 3
+            },
+            {
+                id: 29,
+                question: "Who invented the punched card?",
+                options: ["Jack Kilby", "Herman Hollerith", "John Von Neumann", "None of these"],
+                correct: 1
+            },
+            {
+                id: 30,
+                question: "Third Generation computer year is?",
+                options: ["1940–1955", "1957–1965", "1964–1971", "1972–1979", "None of these"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = {};
+
+        function initQuiz() {
+            renderQuestion();
+            document.querySelector('.total-questions').textContent = quizData.length;
+            updateProgress();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            const q = quizData[currentQuestion];
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container active';
+
+            let optionsHtml = q.options.map((option, index) => `
+                <div class="option" onclick="selectOption(${index})" data-index="${index}">
+                    <span>${String.fromCharCode(65 + index)}. ${option}</span>
+                </div>
+            `).join('');
+
+            questionDiv.innerHTML = `
+                <div class="question-number">Question ${q.id}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">${optionsHtml}</div>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            container.appendChild(questionDiv);
+
+            // Restore previous answer if exists
+            if (answered[currentQuestion] !== undefined) {
+                const prevAnswer = answered[currentQuestion];
+                const options = document.querySelectorAll('.option');
+                options[prevAnswer].classList.add('selected');
+            }
+
+            updateButtons();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('.option');
+            const correctAnswer = quizData[currentQuestion].correct;
+            const feedback = document.getElementById('feedback');
+
+            // Only allow interaction if not already answered
+            if (answered[currentQuestion] === undefined) {
+                options.forEach(opt => opt.classList.remove('selected'));
+                options[index].classList.add('selected');
+                answered[currentQuestion] = index;
+
+                // Check answer
+                if (index === correctAnswer) {
+                    score++;
+                    options[index].classList.add('correct');
+                    feedback.classList.add('show', 'correct');
+                    feedback.innerHTML = '✓ Correct Answer!';
+                } else {
+                    options[index].classList.add('incorrect');
+                    options[correctAnswer].classList.add('correct');
+                    feedback.classList.add('show', 'incorrect');
+                    feedback.innerHTML = `✗ Incorrect! The correct answer is: <strong>${quizData[currentQuestion].options[correctAnswer]}</strong>`;
+                }
+
+                updateButtons();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = answered[currentQuestion] === undefined;
+
+            if (currentQuestion === quizData.length - 1 && answered[currentQuestion] !== undefined) {
+                nextBtn.textContent = 'Show Results';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+            document.querySelector('.current-question').textContent = currentQuestion + 1;
+        }
+
+        function showResults() {
+            document.getElementById('questions-container').style.display = 'none';
+            document.getElementById('button-group').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+
+            const percentage = Math.round((score / quizData.length) * 100);
+            document.getElementById('score-display').textContent = `${score}/30`;
+
+            let message = '';
+            if (percentage >= 90) {
+                message = `🎉 Excellent! You scored ${percentage}%! Outstanding performance!`;
+            } else if (percentage >= 75) {
+                message = `👏 Great! You scored ${percentage}%! Very good work!`;
+            } else if (percentage >= 60) {
+                message = `👍 Good! You scored ${percentage}%! Keep practicing!`;
+            } else if (percentage >= 40) {
+                message = `📚 You scored ${percentage}%! Review the concepts and try again!`;
+            } else {
+                message = `💪 You scored ${percentage}%! Study the material more and attempt again!`;
+            }
+
+            document.getElementById('result-message').textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answered = {};
+            document.getElementById('questions-container').style.display = 'block';
+            document.getElementById('button-group').style.display = 'flex';
+            document.getElementById('results').classList.remove('show');
+            renderQuestion();
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        // Initialize quiz on page load
+        window.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

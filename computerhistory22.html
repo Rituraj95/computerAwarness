@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer History — Mock Test</title>
+<style>
+  :root {
+    --primary: #667eea;
+    --primary-dark: #764ba2;
+    --success: #10b981;
+    --danger: #ef4444;
+    --dark: #1f2937;
+    --light: #f3f4f6;
+    --border: #e5e7eb;
+    --text: #374151;
+    --text-light: #6b7280;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.masthead {
+    background: white;
+    padding: 30px;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  header.masthead .eyebrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 8px;
+  }
+
+  header.masthead h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: -0.5px;
+  }
+
+  header.masthead .meta {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 10px;
+  }
+
+  #progress-bar {
+    background: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  #progress-bar .track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  #progress-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+  }
+
+  #progress-bar .count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .qcard {
+    background: white;
+    padding: 40px;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .qcard .qnum {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .qcard .qtext {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0 0 30px;
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  .options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .options li {
+    margin: 0;
+  }
+
+  .options label {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 16px 20px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+  }
+
+  .options label:hover:not(.correct-opt):not(.chosen-wrong) {
+    border-color: var(--primary);
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateX(4px);
+  }
+
+  .options input {
+    display: none;
+  }
+
+  .opt-letter {
+    font-weight: 800;
+    color: var(--primary);
+    min-width: 24px;
+    font-size: 1.1rem;
+  }
+
+  .options label.correct-opt {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .options label.chosen-wrong {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .options.locked label:hover {
+    transform: none;
+    background: none;
+    border-color: var(--border);
+  }
+
+  .verdict {
+    display: none;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 24px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+  }
+
+  .verdict.show {
+    display: block;
+  }
+
+  .verdict.correct {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-left-color: var(--success);
+  }
+
+  .verdict.incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border-left-color: var(--danger);
+  }
+
+  .nav-zone {
+    background: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    gap: 15px;
+  }
+
+  #nextBtn {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    visibility: hidden;
+    margin-left: auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  #nextBtn.show {
+    visibility: visible;
+  }
+
+  #nextBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  #nextBtn:active {
+    transform: translateY(0);
+  }
+
+  .running-score {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  #scoreScreen {
+    display: none;
+    background: white;
+    border-radius: 15px;
+    padding: 60px 40px;
+    text-align: center;
+    flex: 1;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #scoreScreen .big {
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+  }
+
+  #scoreScreen .label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 12px;
+    font-weight: 700;
+  }
+
+  #scoreScreen .breakdown {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  #scoreScreen .message {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    line-height: 1.8;
+  }
+
+  #retryBtn {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  #retryBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  #retryBtn:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    header.masthead {
+      padding: 20px;
+    }
+
+    header.masthead h1 {
+      font-size: 1.5rem;
+    }
+
+    .qcard {
+      padding: 25px;
+    }
+
+    .qcard .qtext {
+      font-size: 1.1rem;
+    }
+
+    #progress-bar,
+    .nav-zone {
+      padding: 15px 20px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .nav-zone {
+      gap: 12px;
+    }
+
+    #nextBtn {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .running-score {
+      text-align: center;
+    }
+
+    #scoreScreen {
+      padding: 40px 20px;
+    }
+
+    #scoreScreen .big {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Computer Awareness · General Knowledge</p>
+    <h1>🖥️ Computer History — Mock Test</h1>
+    <div class="meta">69 Questions • Test Your Knowledge</div>
+  </header>
+
+  <div id="progress-bar">
+    <div class="track"><div class="fill" id="fillBar"></div></div>
+    <div class="count" id="countText">Question 1 of 69</div>
+  </div>
+
+  <div class="qcard" id="qcard">
+    <div class="qnum" id="qnum">Question 1</div>
+    <p class="qtext" id="qtext"></p>
+    <ul class="options" id="options"></ul>
+    <div class="verdict" id="verdict"></div>
+  </div>
+
+  <div class="nav-zone">
+    <span class="running-score" id="runningScore">Score: 0 / 0</span>
+    <button id="nextBtn">Next Question →</button>
+  </div>
+
+  <div id="scoreScreen">
+    <div class="big" id="scoreBig">0 / 69</div>
+    <div class="label">Final Score</div>
+    <div class="breakdown" id="scoreBreakdown"></div>
+    <div class="message" id="scoreMessage"></div>
+    <button id="retryBtn">🔄 Retake Test</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+{q:"Which was the first electronic computer?", opts:["UNIVAC","ENIAC","EDSAC","ABC"], ans:1},
+{q:"ENIAC stands for:", opts:["Electronic Numerical Integrator and Computer","Electronic Numerical Integrator and Calculator","Electronic Network Integrator and Computer","Electrical Numerical Integrator and Computer"], ans:0},
+{q:"ENIAC was developed by:", opts:["Charles Babbage and Ada Lovelace","John Mauchly and J. Presper Eckert","Bill Gates and Paul Allen","John Atanasoff and Clifford Berry"], ans:1},
+{q:"ENIAC was developed at:", opts:["Harvard University","Stanford University","University of Pennsylvania","MIT"], ans:2},
+{q:"Who was one of the designers of ENIAC?", opts:["John Mauchly","Charles Babbage","Howard Aiken","Herman Hollerith"], ans:0},
+{q:"J. Presper Eckert is associated with which computer?", opts:["ABC","ENIAC","Mark I","PDP-8"], ans:1},
+{q:"Which was the first automatic electronic computer?", opts:["ENIAC","ABC","UNIVAC","EDSAC"], ans:1},
+{q:"ABC stands for:", opts:["Automatic Binary Computer","Atanasoff-Berry Computer","Advanced Binary Calculator","Automatic Basic Computer"], ans:1},
+{q:"ABC was developed by:", opts:["John Atanasoff and Clifford Berry","Mauchly and Eckert","Babbage and Lovelace","Aiken and IBM"], ans:0},
+{q:"The 'A' in ABC refers to:", opts:["Automatic","Atanasoff","Advanced","Analytical"], ans:1},
+{q:"Which computer was designed by Charles Babbage?", opts:["ENIAC","Analytical Engine","UNIVAC","ABC"], ans:1},
+{q:"Who is known as the Father of Computer?", opts:["John Mauchly","Charles Babbage","Howard Aiken","Herman Hollerith"], ans:1},
+{q:"Charles Babbage designed the:", opts:["Analytical Engine","ENIAC","UNIVAC","PDP-8"], ans:0},
+{q:"The Analytical Engine was designed by:", opts:["John Atanasoff","Charles Babbage","Howard Aiken","Douglas Engelbart"], ans:1},
+{q:"What was the first Indian computer?", opts:["PARAM","TIFRAC","PDP-8","VAX"], ans:1},
+{q:"TIFRAC stands for:", opts:["Tata Institute of Fundamental Research Automatic Calculator","Tata Institute of Financial Research Automatic Computer","Technical Institute of Fundamental Research Automatic Calculator","Tata Institute of Fundamental Research Advanced Computer"], ans:0},
+{q:"TIFRAC was developed in:", opts:["USA","UK","India","Japan"], ans:2},
+{q:"Which was the first computer to use the stored-program concept?", opts:["ENIAC","EDSAC","ABC","UNIVAC"], ans:1},
+{q:"EDSAC stands for:", opts:["Electronic Delay Storage Automatic Calculator","Electronic Data Storage Automatic Computer","Electronic Digital Storage Automatic Calculator","Electronic Delay System Automatic Computer"], ans:0},
+{q:"The stored-program concept means:", opts:["Data is stored only on paper","Programs and data can be stored in memory","Programs cannot be changed","Only instructions are stored externally"], ans:1},
+{q:"Which was the first general-purpose computer?", opts:["UNIVAC","ENIAC","ABC","EDSAC"], ans:0},
+{q:"UNIVAC stands for:", opts:["Universal Automatic Computer","Universal Automatic Calculator","United Automatic Computer","Universal Analog Computer"], ans:0},
+{q:"UNIVAC is associated with which type of computer?", opts:["General-purpose computer","Supercomputer","Microcomputer","Minicomputer"], ans:0},
+{q:"Which was the first supercomputer in the world?", opts:["PARAM","CDC 6600","Cray-1","IBM PC"], ans:1},
+{q:"CDC 6600 was developed by:", opts:["IBM","Control Data Corporation","Microsoft","Intel"], ans:1},
+{q:"Which was India's first supercomputer series?", opts:["PARAM","CRAY","CDC","VAX"], ans:0},
+{q:"PARAM is associated with:", opts:["India","USA","UK","Japan"], ans:0},
+{q:"What was the first computer virus?", opts:["Reaper","Creeper","Brain","Melissa"], ans:1},
+{q:"The first computer antivirus was:", opts:["Norton","McAfee","Reaper","Avast"], ans:2},
+{q:"Which was created to remove the Creeper program?", opts:["Reaper","Norton","Brain","Defender"], ans:0},
+{q:"Creeper was a:", opts:["Computer virus/program","Search engine","Operating system","Web browser"], ans:0},
+{q:"What was the first computer game?", opts:["Spacewar!","Pong","Tetris","Pac-Man"], ans:0},
+{q:"Spacewar! is associated with:", opts:["Early computer games","First antivirus","First OS","First browser"], ans:0},
+{q:"What was the first calculating device?", opts:["Pascaline","Abacus","ENIAC","Difference Engine"], ans:1},
+{q:"The Abacus is a:", opts:["Calculating device","Computer virus","Operating system","Input device"], ans:0},
+{q:"Which is considered the earliest calculating device?", opts:["Abacus","UNIVAC","ENIAC","IBM PC"], ans:0},
+{q:"Which was an early input device used in computers?", opts:["Mouse","Punch card","Monitor","Speaker"], ans:1},
+{q:"Punch cards are associated with:", opts:["Herman Hollerith","Charles Babbage","Douglas Engelbart","John Mauchly"], ans:0},
+{q:"Hollerith cards are also known as:", opts:["Punch cards","Memory cards","Smart cards","Graphics cards"], ans:0},
+{q:"What is considered the first operating system name in the given material?", opts:["MS-DOS","GMOS","UNIX","Windows"], ans:1},
+{q:"GMOS stands for:", opts:["General Machine Operating System","General Motors Operating System","General Memory Operating System","General Microsoft Operating System"], ans:0},
+{q:"What was the first adding machine?", opts:["Pascaline","Abacus","ENIAC","Analytical Engine"], ans:0},
+{q:"Pascaline was invented by:", opts:["Blaise Pascal","Charles Babbage","Herman Hollerith","Howard Aiken"], ans:0},
+{q:"Pascaline was a:", opts:["Adding/calculating machine","Computer virus","Web browser","Operating system"], ans:0},
+{q:"What is the scientific name of computer given in the material?", opts:["Homo sapiens","Silico sapiens","Computer sapiens","Homo computerus"], ans:1},
+{q:"\u201cSilico sapiens\u201d is associated with:", opts:["Computer","Internet","Robot","Smartphone"], ans:0},
+{q:"Who is known as the father of the personal computer?", opts:["Henry Roberts","Charles Babbage","Bill Gates","Steve Jobs"], ans:0},
+{q:"Henry Roberts is associated with the development of:", opts:["Personal computer","Supercomputer","Mainframe only","Web browser"], ans:0},
+{q:"Who invented the computer mouse?", opts:["Douglas Engelbart","Charles Babbage","Herman Hollerith","John Atanasoff"], ans:0},
+{q:"The first computer mouse was invented by:", opts:["Douglas Engelbart","Henry Roberts","Howard Aiken","Blaise Pascal"], ans:0},
+{q:"What was the first web browser?", opts:["Mosaic","WorldWideWeb (WWW)","Chrome","Internet Explorer"], ans:1},
+{q:"The first web browser was called:", opts:["Mosaic","WorldWideWeb","Netscape","Opera"], ans:1},
+{q:"Which was the first GUI-based web browser?", opts:["Mosaic","Chrome","WWW","Firefox"], ans:0},
+{q:"Mosaic is associated with:", opts:["First GUI web browser","First computer virus","First OS","First supercomputer"], ans:0},
+{q:"When a computer is switched on, which process is performed first?", opts:["Formatting","Power-On Self-Test","Printing","Defragmentation"], ans:1},
+{q:"POST stands for:", opts:["Power-On Self-Test","Program Operating System Test","Power Operating System Tool","Program-On System Test"], ans:0},
+{q:"POST is performed when:", opts:["Computer is switched on","Computer is switched off","Printer is connected","File is deleted"], ans:0},
+{q:"What was the first network according to the given material?", opts:["ARPANET","Internet","Ethernet","NSFNET"], ans:0},
+{q:"ARPANET is associated with the beginning of:", opts:["Computer networking/Internet","Computer games","Antivirus","Operating systems"], ans:0},
+{q:"Which was the first search engine?", opts:["Google","Archie","Yahoo","Bing"], ans:1},
+{q:"Archie is associated with:", opts:["First search engine","First web browser","First computer virus","First operating system"], ans:0},
+{q:"Which came before modern search engines such as Google?", opts:["Archie","Chrome","Windows","Facebook"], ans:0},
+{q:"What was the first minicomputer?", opts:["PDP-8","ENIAC","UNIVAC","CDC 6600"], ans:0},
+{q:"PDP-8 stands for:", opts:["Programmed Data Processor-8","Personal Data Processor-8","Program Data Processing-8","Programmable Digital Processor-8"], ans:0},
+{q:"PDP-8 is associated with which category?", opts:["Minicomputer","Supercomputer","Mainframe","Microcomputer"], ans:0},
+{q:"What was the first microcomputer according to the material?", opts:["Micral","PDP-8","ENIAC","UNIVAC"], ans:0},
+{q:"Micral is associated with:", opts:["Microcomputer","Supercomputer","Search engine","Web browser"], ans:0},
+{q:"What was the first mainframe computer according to the given material?", opts:["Harvard Mark I","PDP-8","Micral","ENIAC"], ans:0},
+{q:"Harvard Mark I is associated with which category in the given material?", opts:["Mainframe computer","Microcomputer","Minicomputer","Supercomputer"], ans:0}
+];
+
+const letters = ['A','B','C','D'];
+let current = 0;
+let score = 0;
+let locked = false;
+
+const qnum = document.getElementById('qnum');
+const qtext = document.getElementById('qtext');
+const optionsEl = document.getElementById('options');
+const verdict = document.getElementById('verdict');
+const nextBtn = document.getElementById('nextBtn');
+const fillBar = document.getElementById('fillBar');
+const countText = document.getElementById('countText');
+const runningScore = document.getElementById('runningScore');
+
+function renderQuestion(i){
+  locked = false;
+  const item = questions[i];
+  qnum.textContent = 'Question ' + (i+1) + ' of ' + questions.length;
+  qtext.textContent = item.q;
+  optionsEl.innerHTML = '';
+  optionsEl.classList.remove('locked');
+  verdict.className = 'verdict';
+  verdict.textContent = '';
+  nextBtn.classList.remove('show');
+  nextBtn.textContent = (i === questions.length - 1) ? 'See Final Score →' : 'Next Question →';
+
+  item.opts.forEach((opt, j) => {
+    const li = document.createElement('li');
+    const label = document.createElement('label');
+    label.dataset.idx = j;
+    const letterSpan = document.createElement('span');
+    letterSpan.className = 'opt-letter';
+    letterSpan.textContent = letters[j] + ')';
+    const textSpan = document.createElement('span');
+    textSpan.textContent = opt;
+    label.appendChild(letterSpan);
+    label.appendChild(textSpan);
+    label.addEventListener('click', () => selectAnswer(i, j));
+    li.appendChild(label);
+    optionsEl.appendChild(li);
+  });
+
+  fillBar.style.width = (i/questions.length*100) + '%';
+  countText.textContent = 'Question ' + (i+1) + ' of ' + questions.length;
+  runningScore.textContent = 'Score: ' + score + ' / ' + i;
+}
+
+function selectAnswer(i, chosenIdx){
+  if(locked) return;
+  locked = true;
+  const item = questions[i];
+  const isCorrect = chosenIdx === item.ans;
+  if(isCorrect) score++;
+
+  optionsEl.classList.add('locked');
+  const labels = optionsEl.querySelectorAll('label');
+  labels.forEach(label => {
+    const idx = parseInt(label.dataset.idx);
+    if(idx === item.ans) label.classList.add('correct-opt');
+    if(idx === chosenIdx && !isCorrect) label.classList.add('chosen-wrong');
+  });
+
+  verdict.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+  verdict.textContent = isCorrect
+    ? '✓ Correct!'
+    : '✗ Not correct — correct answer is ' + letters[item.ans] + ') ' + item.opts[item.ans];
+
+  nextBtn.classList.add('show');
+  runningScore.textContent = 'Score: ' + score + ' / ' + (i+1);
+}
+
+nextBtn.addEventListener('click', () => {
+  current++;
+  if(current >= questions.length){
+    showFinalScore();
+  } else {
+    renderQuestion(current);
+  }
+});
+
+function showFinalScore(){
+  document.getElementById('qcard').style.display = 'none';
+  document.querySelector('.nav-zone').style.display = 'none';
+  document.getElementById('progress-bar').style.display = 'none';
+  
+  const screen = document.getElementById('scoreScreen');
+  screen.style.display = 'block';
+  
+  document.getElementById('scoreBig').textContent = score + ' / ' + questions.length;
+  
+  const pct = Math.round(score/questions.length*100);
+  document.getElementById('scoreBreakdown').textContent = pct + '% Correct';
+  
+  let message = '';
+  if(pct >= 90) {
+    message = '🎉 Outstanding! You have excellent knowledge of computer history!';
+  } else if(pct >= 75) {
+    message = '👏 Great job! You performed very well on this test!';
+  } else if(pct >= 60) {
+    message = '👍 Good effort! Keep reviewing to improve your score!';
+  } else if(pct >= 40) {
+    message = '📚 You need more practice. Review the concepts and try again!';
+  } else {
+    message = '💪 Keep learning! Study the material and retake the test!';
+  }
+  
+  document.getElementById('scoreMessage').textContent = message;
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => window.location.reload());
+
+renderQuestion(0);
+</script>
+</body>
+</html>
