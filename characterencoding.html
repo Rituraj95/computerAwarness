@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Encoding Mock Test</title>
+<style>
+  :root{
+    --ink:#1b1f23;
+    --paper:#f7f5f0;
+    --panel:#ffffff;
+    --rule:#22252b;
+    --accent:#2f6f5e;      /* deep terminal green */
+    --accent-soft:#e4efe9;
+    --wrong:#b23b3b;
+    --wrong-soft:#f8e6e6;
+    --muted:#6b6f76;
+    --mono: 'JetBrains Mono','Consolas',monospace;
+    --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.025) 0px, rgba(0,0,0,0.025) 1px, transparent 1px, transparent 40px);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding:32px 16px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  header{
+    border-bottom:3px solid var(--rule);
+    padding-bottom:18px;
+    margin-bottom:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .title-block .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .title-block h1{
+    font-size:28px;
+    margin:0;
+    letter-spacing:-0.01em;
+    line-height:1.15;
+  }
+  .title-block p{
+    margin:6px 0 0;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .bitcode{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    text-align:right;
+    line-height:1.6;
+  }
+
+  #scoreboard{
+    position:sticky;
+    top:12px;
+    z-index:10;
+    background:var(--panel);
+    border:1.5px solid var(--rule);
+    border-radius:10px;
+    padding:12px 18px;
+    margin-bottom:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 3px 0 var(--rule);
+    font-family:var(--mono);
+  }
+  #scoreboard .label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+  #scoreboard .val{font-size:20px;font-weight:700;}
+  #scoreboard .val.good{color:var(--accent);}
+  #scoreboard .val.bad{color:var(--wrong);}
+  #progress-bar-track{
+    flex:1;
+    margin:0 18px;
+    height:6px;
+    background:#e6e3dc;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  #progress-bar-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:width .25s ease;
+  }
+
+  .section-label{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:38px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--rule);
+    opacity:.25;
+  }
+
+  .q-card{
+    background:var(--panel);
+    border:1.5px solid var(--rule);
+    border-radius:10px;
+    padding:20px 22px;
+    margin-bottom:16px;
+    box-shadow:0 3px 0 rgba(27,31,35,0.08);
+  }
+  .q-head{
+    display:flex;
+    gap:12px;
+    align-items:baseline;
+    margin-bottom:14px;
+  }
+  .q-num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--muted);
+    min-width:30px;
+  }
+  .q-text{font-size:16px;font-weight:600;line-height:1.45;}
+
+  .options{display:flex;flex-direction:column;gap:8px;}
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 14px;
+    border:1.5px solid #d8d5cc;
+    border-radius:8px;
+    cursor:pointer;
+    background:#fdfcfa;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+    font-size:14.5px;
+  }
+  .opt:hover{border-color:var(--accent);background:var(--accent-soft);}
+  .opt .letter{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:12px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    border:1.5px solid #b8b4a8;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    color:var(--muted);
+  }
+
+  .q-card.answered .opt{cursor:default;}
+  .q-card.answered .opt:hover{background:#fdfcfa;border-color:#d8d5cc;transform:none;}
+
+  .opt.correct{
+    background:var(--accent-soft);
+    border-color:var(--accent);
+  }
+  .opt.correct .letter{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .opt.selected-wrong{
+    background:var(--wrong-soft);
+    border-color:var(--wrong);
+  }
+  .opt.selected-wrong .letter{background:var(--wrong);border-color:var(--wrong);color:#fff;}
+  .opt.disabled-other{opacity:.45;}
+
+  .feedback{
+    margin-top:12px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    padding:8px 12px;
+    border-radius:6px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:var(--accent-soft);color:var(--accent);}
+  .feedback.bad{background:var(--wrong-soft);color:var(--wrong);}
+
+  #final{
+    margin-top:40px;
+    padding:26px;
+    border:1.5px solid var(--rule);
+    border-radius:10px;
+    background:var(--panel);
+    text-align:center;
+    display:none;
+    box-shadow:0 3px 0 var(--rule);
+  }
+  #final.show{display:block;}
+  #final .big{font-family:var(--mono);font-size:40px;font-weight:700;color:var(--accent);}
+  #final p{color:var(--muted);margin:6px 0 18px;}
+  #reset-btn{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--rule);
+    color:#fff;
+    border:none;
+    padding:12px 24px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  #reset-btn:hover{background:var(--accent);}
+
+  footer{
+    text-align:center;
+    margin-top:50px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.05em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <div class="eyebrow">Self-Check &middot; 22 Questions</div>
+      <h1>Character Encoding Mock Test</h1>
+      <p>ASCII &middot; EASCII &middot; BCD &middot; EBCDIC &middot; UNICODE</p>
+    </div>
+    <div class="bitcode">01000001<br>01010011<br>01000011</div>
+  </header>
+
+  <div id="scoreboard">
+    <div>
+      <div class="label">Answered</div>
+      <div class="val" id="answered-count">0 / 22</div>
+    </div>
+    <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
+    <div style="text-align:right;">
+      <div class="label">Score</div>
+      <div class="val good" id="score-count">0</div>
+    </div>
+  </div>
+
+  <div class="section-label">Set 1 &middot; Encoding Standards</div>
+  <div id="set1"></div>
+
+  <div class="section-label">Set 2 &middot; ASCII in Detail</div>
+  <div id="set2"></div>
+
+  <div id="final">
+    <div class="big" id="final-score">0 / 22</div>
+    <p id="final-msg">Nice work — review any misses above.</p>
+    <button id="reset-btn" onclick="resetTest()">Retake Test</button>
+  </div>
+
+  <footer>MADE FOR REVISION &middot; CLICK AN OPTION TO CHECK YOUR ANSWER</footer>
+</div>
+
+<script>
+const set1 = [
+  {q:"ASCII stands for:", opts:["American Standard Code for Information Interchange","American Standard Computer Information Interchange","American System Code for Information Interchange","American Standard Code for Internet Interchange"], ans:0},
+  {q:"EASCII stands for:", opts:["Enhanced ASCII","Extended ASCII","Extra ASCII","Electronic ASCII"], ans:1},
+  {q:"BCD stands for:", opts:["Binary-Coded Data","Binary-Coded Decimal","Basic Coded Decimal","Binary Computer Decimal"], ans:1},
+  {q:"EBCDIC stands for:", opts:["Extended Binary-Coded Decimal Interchange Code","Extended Binary Computer Data Interchange Code","Electronic Binary-Coded Decimal Interchange Code","Extended Basic Coded Decimal Interchange Code"], ans:0},
+  {q:"According to the image, ASCII uses:", opts:["4 bits","7 bits","8 bits","16 bits"], ans:1},
+  {q:"According to the image, EASCII uses:", opts:["4 bits","7 bits","8 bits","16 bits"], ans:2},
+  {q:"According to the image, BCD uses:", opts:["4 bits","7 bits","8 bits","16 bits"], ans:0},
+  {q:"According to the image, EBCDIC uses:", opts:["4 bits","7 bits","8 bits","21 bits"], ans:2},
+  {q:"According to the image, UNICODE uses:", opts:["8 bits","12 bits","16 bits","21 bits"], ans:2},
+  {q:"According to the image, UNICODE 2.0 uses:", opts:["8 bits","16 bits","20 bits","21 bits"], ans:3},
+  {q:"Which of the following has the highest number of bits according to the image?", opts:["ASCII","EBCDIC","UNICODE","UNICODE 2.0"], ans:3},
+];
+
+const set2 = [
+  {q:"What does ASCII stand for?", opts:["American Standard Code for Information Interchange","American Standard Computer Code for Information Interchange","American Standard Code for Internet Interchange","American System Code for Information Interchange"], ans:0},
+  {q:"The two types of ASCII are ______ and ______.", opts:["ASCII-4 and ASCII-8","ASCII-8 and ASCII-16","ASCII-7 and ASCII-8","ASCII-16 and ASCII-32"], ans:2},
+  {q:"The number of characters that can be represented in ASCII-7 are:", opts:["32","64","128","256"], ans:2},
+  {q:"The number of characters that can be represented in ASCII-8 are:", opts:["128","256","512","1024"], ans:1},
+  {q:"ASCII code is a:", opts:["Fixed-length code","Variable-length code","Fixed & variable-length code","All of these"], ans:0},
+  {q:"The decimal representation for the character '!' in ASCII is:", opts:["32","33","34","35"], ans:1},
+  {q:"The decimal representation for the character 'A' in ASCII is:", opts:["64","65","66","67"], ans:1},
+  {q:"The decimal representation for the character 's' in ASCII is:", opts:["114","115","116","117"], ans:1},
+  {q:"The decimal representation for the character 'a' in ASCII is:", opts:["97","98","99","100"], ans:0},
+  {q:"ASCII code is a:", opts:["7-bit code","Variable-length code","Fixed & variable-length code","All of these"], ans:0},
+  {q:"EASCII code is a:", opts:["8-bit fixed code","7-bit code","8-bit code","16-bit code"], ans:2},
+];
+
+const allQuestions = [...set1.map((q,i)=>({...q,id:'s1-'+i})), ...set2.map((q,i)=>({...q,id:'s2-'+i}))];
+const TOTAL = allQuestions.length;
+let answered = {};
+let score = 0;
+
+function letterFor(i){return String.fromCharCode(65+i);}
+
+function renderSet(list, containerId, prefix){
+  const container = document.getElementById(containerId);
+  list.forEach((item, idx) => {
+    const id = prefix+'-'+idx;
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-'+id;
+
+    const head = document.createElement('div');
+    head.className = 'q-head';
+    head.innerHTML = `<span class="q-num">Q${idx+1}</span><span class="q-text">${item.q}</span>`;
+    card.appendChild(head);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'options';
+
+    item.opts.forEach((optText, oi) => {
+      const opt = document.createElement('div');
+      opt.className = 'opt';
+      opt.id = `opt-${id}-${oi}`;
+      opt.innerHTML = `<span class="letter">${letterFor(oi)}</span><span>${optText}</span>`;
+      opt.onclick = () => selectAnswer(id, item, oi);
+      optsWrap.appendChild(opt);
+    });
+    card.appendChild(optsWrap);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = 'fb-'+id;
+    card.appendChild(fb);
+
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(id, item, chosenIdx){
+  if(answered[id] !== undefined) return; // already answered
+  answered[id] = chosenIdx;
+
+  const card = document.getElementById('card-'+id);
+  card.classList.add('answered');
+
+  const correctIdx = item.ans;
+  const isCorrect = chosenIdx === correctIdx;
+  if(isCorrect) score++;
+
+  item.opts.forEach((optText, oi) => {
+    const optEl = document.getElementById(`opt-${id}-${oi}`);
+    if(oi === correctIdx){
+      optEl.classList.add('correct');
+    } else if(oi === chosenIdx){
+      optEl.classList.add('selected-wrong');
+    } else {
+      optEl.classList.add('disabled-other');
+    }
+  });
+
+  const fb = document.getElementById('fb-'+id);
+  fb.classList.add('show');
+  if(isCorrect){
+    fb.classList.add('good');
+    fb.textContent = `✓ Correct — ${letterFor(correctIdx)}) ${item.opts[correctIdx]}`;
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = `✗ Incorrect — correct answer is ${letterFor(correctIdx)}) ${item.opts[correctIdx]}`;
+  }
+
+  updateScoreboard();
+}
+
+function updateScoreboard(){
+  const answeredCount = Object.keys(answered).length;
+  document.getElementById('answered-count').textContent = `${answeredCount} / ${TOTAL}`;
+  document.getElementById('score-count').textContent = score;
+  document.getElementById('progress-bar-fill').style.width = (answeredCount/TOTAL*100)+'%';
+
+  if(answeredCount === TOTAL){
+    const finalEl = document.getElementById('final');
+    finalEl.classList.add('show');
+    document.getElementById('final-score').textContent = `${score} / ${TOTAL}`;
+    const pct = Math.round(score/TOTAL*100);
+    let msg = '';
+    if(pct === 100) msg = 'Perfect score — you know your encoding standards cold.';
+    else if(pct >= 80) msg = 'Strong result — review the couple you missed and you\'re set.';
+    else if(pct >= 50) msg = 'Decent pass — go back over EBCDIC and Unicode bit-widths.';
+    else msg = 'Worth another pass — revisit the bit-width chart before retrying.';
+    document.getElementById('final-msg').textContent = msg;
+    finalEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function resetTest(){
+  answered = {};
+  score = 0;
+  document.getElementById('set1').innerHTML = '';
+  document.getElementById('set2').innerHTML = '';
+  document.getElementById('final').classList.remove('show');
+  renderSet(set1, 'set1', 's1');
+  renderSet(set2, 'set2', 's2');
+  updateScoreboard();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+renderSet(set1, 'set1', 's1');
+renderSet(set2, 'set2', 's2');
+</script>
+</body>
+</html>
