@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Awareness MCQ Practice</title>
+<style>
+:root{
+  --bg:#0b1020;--panel:#121a2d;--panel2:#18233b;--text:#eef3ff;--muted:#a7b4cc;
+  --accent:#6ee7d8;--accent2:#8b9cff;--border:#2b3855;--good:#36d399;--bad:#fb7185;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top left,#18294a 0%,#0b1020 45%,#080c17 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+button,select{font:inherit}
+button{cursor:pointer;border:0}
+.app{max-width:980px;margin:auto;padding:24px 16px 48px}
+.hero{padding:26px;border:1px solid var(--border);border-radius:24px;background:linear-gradient(135deg,rgba(110,231,216,.12),rgba(139,156,255,.09));box-shadow:0 18px 55px #0003}
+.eyebrow{color:var(--accent);font-size:.78rem;letter-spacing:.15em;font-weight:800;text-transform:uppercase}
+h1{margin:10px 0 8px;font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.12}
+.hero p{margin:0;color:var(--muted);line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.stat{background:#0b1222a8;border:1px solid var(--border);padding:13px 15px;border-radius:15px}
+.stat strong{display:block;font-size:1.35rem;color:var(--accent)}
+.stat span{font-size:.8rem;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+select,.secondary{background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:12px;padding:11px 14px}
+select{flex:1;min-width:190px}
+.progress-wrap{height:8px;background:#263149;border-radius:99px;overflow:hidden;margin:14px 0 22px}
+.progress{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s}
+.quiz-card{background:rgba(18,26,45,.96);border:1px solid var(--border);border-radius:22px;padding:clamp(18px,4vw,30px);box-shadow:0 18px 45px #0002}
+.question-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.88rem}
+.pill{border:1px solid #35506b;background:#17283b;color:var(--accent);padding:6px 10px;border-radius:99px;font-size:.76rem;font-weight:700}
+h2{font-size:clamp(1.15rem,2.5vw,1.5rem);line-height:1.45;margin:20px 0}
+.options{display:grid;gap:11px}
+.option{width:100%;display:flex;align-items:flex-start;gap:12px;text-align:left;color:var(--text);background:var(--panel2);border:1px solid var(--border);padding:14px 15px;border-radius:14px;transition:.18s}
+.option:hover:not(:disabled){border-color:var(--accent2);transform:translateY(-1px);background:#1d2c49}
+.letter{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:8px;background:#293651;color:#c8d4ec;font-size:.8rem;font-weight:800}
+.option.correct{border-color:var(--good);background:#10382f}
+.option.correct .letter{background:var(--good);color:#05251d}
+.option.wrong{border-color:var(--bad);background:#3a1c2b}
+.option.wrong .letter{background:var(--bad);color:#310812}
+.option:disabled{cursor:default}
+.feedback{display:none;margin-top:16px;padding:14px 16px;border-radius:13px;line-height:1.55}
+.feedback.show{display:block}
+.feedback.good{background:#10382f;border:1px solid #23765e}
+.feedback.bad{background:#3a1c2b;border:1px solid #87364d}
+.feedback small{display:block;color:#d5deee;margin-top:5px}
+.actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:22px}
+.primary{background:linear-gradient(135deg,var(--accent),#9af1df);color:#06201f;padding:12px 19px;border-radius:12px;font-weight:800}
+.primary:hover{filter:brightness(1.06)}
+.secondary:hover{border-color:var(--accent2)}
+button:focus-visible,select:focus-visible{outline:3px solid #8b9cff;outline-offset:3px}
+.result{display:none;text-align:center;padding:26px 12px}
+.result.show{display:block}
+.score-ring{width:132px;height:132px;border-radius:50%;margin:18px auto;display:grid;place-items:center;background:conic-gradient(var(--accent) var(--score,0%),#293651 0);position:relative}
+.score-ring:before{content:"";position:absolute;inset:10px;background:var(--panel);border-radius:50%}
+.score-ring strong{position:relative;font-size:1.8rem}
+.result h2{margin:8px 0}
+.result p{color:var(--muted)}
+.review{margin-top:22px;text-align:left;display:grid;gap:10px}
+.review-item{padding:14px;border:1px solid var(--border);border-radius:12px;background:#0f1728}
+.review-item strong{display:block;margin-bottom:5px}
+.review-item span{color:var(--muted);font-size:.9rem}
+.footer{text-align:center;color:#8290aa;font-size:.8rem;margin-top:20px;line-height:1.6}
+@media(max-width:520px){.app{padding:14px 10px 32px}.hero{padding:20px;border-radius:18px}.stats{gap:8px}.stat{padding:11px}.stat strong{font-size:1.1rem}.quiz-card{border-radius:18px}.actions button{flex:1}.option{padding:12px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="hero">
+    <div class="eyebrow">Computer Awareness • Practice Set</div>
+    <h1>Types of Computer</h1>
+    <p>Practice MCQs on microcomputers, minicomputers, mainframes and supercomputers. Select an answer to see instant feedback, then review your score.</p>
+    <div class="stats">
+      <div class="stat"><strong id="totalStat">32</strong><span>Questions in set</span></div>
+      <div class="stat"><strong>4</strong><span>Topic areas</span></div>
+      <div class="stat"><strong id="answeredStat">0</strong><span>Answered</span></div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <select id="categoryFilter" aria-label="Filter questions by topic">
+      <option value="All">All topics</option>
+      <option value="Microcomputers">Microcomputers</option>
+      <option value="Minicomputers">Minicomputers</option>
+      <option value="Mainframe Computers">Mainframe computers</option>
+      <option value="Supercomputers">Supercomputers</option>
+      <option value="General">General / clarification</option>
+    </select>
+    <button class="secondary" id="restartBtn">↻ Restart quiz</button>
+  </div>
+
+  <div class="progress-wrap" aria-label="Quiz progress"><div class="progress" id="progressBar"></div></div>
+
+  <section class="quiz-card" id="quizCard">
+    <div class="question-meta"><span id="counter">Question 1 of 32</span><span class="pill" id="topicPill">Microcomputers</span></div>
+    <h2 id="questionText"></h2>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    <div class="actions">
+      <button class="secondary" id="prevBtn">← Previous</button>
+      <button class="primary" id="nextBtn">Next question →</button>
+    </div>
+  </section>
+
+  <section class="quiz-card result" id="resultCard">
+    <div class="eyebrow">Practice complete</div>
+    <h2>Your result</h2>
+    <div class="score-ring" id="scoreRing"><strong id="scoreText">0/0</strong></div>
+    <p id="resultMessage"></p>
+    <button class="primary" id="reviewBtn">Review answers</button>
+    <div class="review" id="reviewList"></div>
+  </section>
+  <div class="footer">Study tip: Some source slides contain oversimplified or disputed facts. Explanatory notes are shown where needed.</div>
+</main>
+<script>
+const questions = [
+{topic:"Microcomputers",q:"The speed of a microprocessor is commonly expressed in which unit?",opts:["Gigahertz (GHz)","Gigabytes (GB)","Kilobytes (KB)","None of these"],a:0,note:"Processor clock speed is commonly expressed in MHz or GHz."},
+{topic:"Microcomputers",q:"Processor clock speed can be measured in:",opts:["Mbps","MHz","Bits per second","Bytes per second"],a:1,note:"GHz is also widely used for modern processors."},
+{topic:"Microcomputers",q:"Which of these is an early personal microcomputer?",opts:["IBM PC","PDP-1","CDC 6600","Altair 8800"],a:3,note:"The Altair 8800, introduced in 1975, was an influential early personal computer."},
+{topic:"Microcomputers",q:"Which of these was an early microcomputer?",opts:["PDP-1","IBM 1401","CDC 6600","Altair 8800"],a:3,note:"The Altair 8800 is the expected answer in the source slides."},
+{topic:"Microcomputers",q:"Which type of computer is generally designed primarily for individual use?",opts:["Mainframe computer","Minicomputer","Microcomputer","All of the above"],a:2,note:"This is a general classification; modern PCs can also participate in networked and multi-user services."},
+{topic:"Microcomputers",q:"What is another name for a personal computer (PC)?",opts:["Microcomputer","Private computer","Distinctive computer","Individual computer"],a:0},
+{topic:"Microcomputers",q:"Desktop and laptop computers are generally classified as:",opts:["Minicomputers","Server computers","Microcomputers","Mainframe computers"],a:2},
+{topic:"Minicomputers",q:"A minicomputer is also known as a:",opts:["Hybrid computer","Supercomputer","Midrange computer","None of these"],a:2},
+{topic:"Minicomputers",q:"According to the uploaded notes, a minicomputer can support up to how many users simultaneously?",opts:["50","100","200","250"],a:3,note:"250 is the option highlighted in the image, but there is no universal maximum; capacity depends on the system."},
+{topic:"Minicomputers",q:"Which type of computer is generally below a mainframe in processing capacity?",opts:["Supercomputer","Minicomputer","Mainframe computer","Hybrid computer"],a:1},
+{topic:"Minicomputers",q:"Which computer is often described as a landmark early commercial minicomputer?",opts:["Mark I","PARAM 8000","UNIVAC I","PDP-8"],a:3,note:"The image highlights PDP-1, but PDP-8 is more widely recognized as a landmark early commercial minicomputer. PDP-1 was an earlier computer."},
+{topic:"Minicomputers",q:"Which statement is NOT true about minicomputers?",opts:["They are used in midrange computing systems","They may contain one or more processors","They are larger than mainframe computers","The PDP series included minicomputers"],a:2},
+{topic:"Mainframe Computers",q:"Which type of computer is used by large organizations to process large amounts of data?",opts:["Minicomputer","Mainframe computer","Microcomputer","Supercomputer"],a:1},
+{topic:"Mainframe Computers",q:"In a traditional mainframe environment, users may interact with the central computer through a:",opts:["Node","Terminal","Switch","Hub"],a:1},
+{topic:"Mainframe Computers",q:"Which terminal mainly acts as an input/output device and relies on the host computer for processing?",opts:["Dumb terminal","Intelligent terminal","Super terminal","Low terminal"],a:0,note:"This is the traditional textbook definition of a dumb terminal."},
+{topic:"Mainframe Computers",q:"Which terminal can perform some processing operations of its own?",opts:["Dumb terminal","Intelligent terminal","Low terminal","None of these"],a:1},
+{topic:"Mainframe Computers",q:"Which computer is generally associated with large-scale enterprise data processing?",opts:["Mainframe computer","Minicomputer","Microcomputer","None of these"],a:0},
+{topic:"Mainframe Computers",q:"EBCDIC character encoding is historically associated especially with:",opts:["IBM mainframe and midrange systems","Only smartphones","Only gaming consoles","Only supercomputers"],a:0,note:"EBCDIC is not exclusive to mainframes."},
+{topic:"Mainframe Computers",q:"Which set contains early electronic computers?",opts:["UNIVAC I","ENIAC","BINAC","All of these"],a:3,note:"The image wording is unclear; these are early computers, but they should not all be classified as mainframes."},
+{topic:"Mainframe Computers",q:"Which are major application areas for mainframe computers?",opts:["Banking","Government","Large-scale transaction processing","All of these"],a:3},
+{topic:"Supercomputers",q:"Supercomputer performance is commonly measured in:",opts:["Floating-point operations per second (FLOPS)","Millions of instructions per second only","Kilobits per second","Megabits per second"],a:0},
+{topic:"Supercomputers",q:"Who is widely known as the father of supercomputing?",opts:["Jack Kilby","Ray Tomlinson","Shiva Ayyadurai","Seymour Cray"],a:3},
+{topic:"Supercomputers",q:"Which type of computer is designed for extremely demanding scientific and computational tasks?",opts:["Personal computer","Minicomputer","Supercomputer","Microcomputer"],a:2},
+{topic:"Supercomputers",q:"Supercomputers are used for:",opts:["Scientific research","Developing new materials","Climate and disease modelling","All of these"],a:3},
+{topic:"Supercomputers",q:"Which computing approach is commonly used to solve very large computational problems?",opts:["Parallel computing","Serial computing only","Mainframe computing","Microcomputer computing"],a:0,note:"Parallel computing is the precise term; the slide's option wording is simplified."},
+{topic:"Supercomputers",q:"Which operating system is widely used on supercomputers?",opts:["Windows","DOS","Android","Linux","iOS"],a:3},
+{topic:"Supercomputers",q:"Which was India's first indigenously developed supercomputer?",opts:["PARAM Yuva","PARAM 8000","PARAM Padma","PARAM Siddhi-AI"],a:1},
+{topic:"Supercomputers",q:"Which supercomputer is highlighted in the uploaded notes as the world's fastest?",opts:["Frontier","Fugaku","El Capitan","Summit"],a:2,note:"This reflects the source slide. Supercomputer rankings change over time, so check the latest TOP500 list for current-affairs exams."},
+{topic:"Supercomputers",q:"Which computer is commonly cited as an early, influential supercomputer?",opts:["CDC 6600","UNIVAC I","PARAM 8000","IBM 1401"],a:0},
+{topic:"Supercomputers",q:"Who founded Cray Research and is closely associated with Cray supercomputers?",opts:["Konrad Zuse","Leonard Kleinrock","William Shockley","Seymour Cray"],a:3},
+{topic:"General",q:"Processor clock speed is most appropriately expressed in:",opts:["Hz, MHz or GHz","Kilograms","Litres per second","Pixels only"],a:0},
+{topic:"General",q:"In traditional textbook classifications, which computer is commonly described as a large-scale system for high-volume business data processing?",opts:["Mainframe computer","Minicomputer","Microcomputer","Tablet computer"],a:0,note:"The word “largest” can be ambiguous: supercomputers are generally designed for the highest computational performance."}
+];
+let pool=[...questions], index=0, answers={};
+const $=id=>document.getElementById(id);
+function updateStats(){ $('totalStat').textContent=pool.length; $('answeredStat').textContent=Object.keys(answers).filter(k=>answers[k]!==undefined && pool.some(q=>q.q===k)).length; }
+function render(){
+  if(index>=pool.length){showResult();return;}
+  $('quizCard').style.display='block';$('resultCard').classList.remove('show');
+  const item=pool[index], chosen=answers[item.q];
+  $('counter').textContent=`Question ${index+1} of ${pool.length}`;
+  $('topicPill').textContent=item.topic;$('questionText').textContent=item.q;
+  $('progressBar').style.width=`${(index/pool.length)*100}%`;
+  $('options').innerHTML='';
+  item.opts.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='option';b.type='button';
+    const letter=document.createElement('span');letter.className='letter';letter.textContent=String.fromCharCode(65+i);
+    const label=document.createElement('span');label.textContent=opt;
+    b.append(letter,label);
+    if(chosen!==undefined){b.disabled=true;if(i===item.a)b.classList.add('correct');if(i===chosen&&chosen!==item.a)b.classList.add('wrong');}
+    b.addEventListener('click',()=>selectAnswer(i));$('options').appendChild(b);
+  });
+  const fb=$('feedback');fb.className='feedback';fb.innerHTML='';
+  if(chosen!==undefined){
+    fb.classList.add('show',chosen===item.a?'good':'bad');
+    fb.append(document.createTextNode(chosen===item.a?'✓ Correct! ':'✕ Not quite. '));
+    fb.append(document.createTextNode('Answer: '+String.fromCharCode(65+item.a)+'. '+item.opts[item.a]));
+    if(item.note){const small=document.createElement('small');small.textContent=item.note;fb.appendChild(small);}
+  }
+  $('prevBtn').disabled=index===0;$('prevBtn').style.opacity=index===0?'.45':'1';
+  $('nextBtn').textContent=index===pool.length-1?'Finish quiz':'Next question →';
+  updateStats();
+}
+function selectAnswer(i){if(answers[pool[index].q]!==undefined)return;answers[pool[index].q]=i;render();}
+function showResult(){
+  $('quizCard').style.display='none';$('resultCard').classList.add('show');$('progressBar').style.width='100%';
+  let correct=0;pool.forEach(q=>{if(answers[q.q]===q.a)correct++});
+  $('scoreText').textContent=`${correct}/${pool.length}`;
+  $('scoreRing').style.setProperty('--score',`${correct/pool.length*100}%`);
+  $('resultMessage').textContent=`You scored ${Math.round(correct/pool.length*100)}%. ${correct/pool.length>=.8?'Great work—keep revising!':correct/pool.length>=.5?'Good effort. Review the explanations and try again.':'Keep practising; review the answers and retry the set.'}`;
+  $('reviewList').innerHTML='';
+  pool.forEach((q,i)=>{const d=document.createElement('div');d.className='review-item';const strong=document.createElement('strong');strong.textContent=`${i+1}. ${q.q}`;const span=document.createElement('span');const user=answers[q.q];span.textContent=`Your answer: ${user===undefined?'Not answered':q.opts[user]} • Correct: ${q.opts[q.a]}${q.note?' • '+q.note:''}`;d.append(strong,span);$('reviewList').appendChild(d)});
+  updateStats();
+}
+$('nextBtn').addEventListener('click',()=>{if(index<pool.length-1){index++;render()}else showResult()});
+$('prevBtn').addEventListener('click',()=>{if(index>0){index--;render()}});
+$('restartBtn').addEventListener('click',()=>{answers={};index=0;pool=questions.filter(q=>$('categoryFilter').value==='All'||q.topic===$('categoryFilter').value);render();});
+$('categoryFilter').addEventListener('change',()=>{answers={};index=0;pool=questions.filter(q=>$('categoryFilter').value==='All'||q.topic===$('categoryFilter').value);render();});
+$('reviewBtn').addEventListener('click',()=>{$('reviewList').scrollIntoView({behavior:'smooth',block:'start'})});
+render();
+</script>
+</body>
+</html>
