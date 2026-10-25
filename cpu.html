@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Awareness Mock Test</title>
+<style>
+  :root {
+    --bg: #0b1020; --panel: #121a2d; --panel2: #18233b; --text: #eef3ff;
+    --muted: #9aa9c5; --accent: #7c9cff; --accent2: #a58bff;
+    --green: #20c997; --red: #ff6577; --border: rgba(255,255,255,.1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: radial-gradient(circle at 10% 0%, #202e58 0, transparent 35%),
+                radial-gradient(circle at 100% 15%, #302254 0, transparent 30%), var(--bg);
+    padding: 28px 16px 40px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:22px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .logo { width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 8px 28px #7c9cff35; }
+  h1 { font-size: clamp(21px, 4vw, 30px); margin:0; letter-spacing:-.7px; }
+  .subtitle { color:var(--muted); font-size:13px; margin-top:4px; }
+  .pill { border:1px solid var(--border); background:#ffffff08; padding:9px 13px; border-radius:999px; color:#dce5ff; font-size:13px; white-space:nowrap; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
+  .stat { padding:14px 16px; border:1px solid var(--border); border-radius:16px; background:#ffffff06; }
+  .stat-label { color:var(--muted); font-size:12px; margin-bottom:5px; }
+  .stat-value { font-weight:750; font-size:21px; }
+  .progress-box { background:#ffffff08; border:1px solid var(--border); padding:14px 16px; border-radius:16px; margin-bottom:16px; }
+  .progress-top { display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-bottom:10px; }
+  .track { height:8px; background:#ffffff12; border-radius:20px; overflow:hidden; }
+  .bar { width:0%; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:20px; transition:width .25s ease; }
+  .card { background:linear-gradient(180deg,#151f35,#10182a); border:1px solid var(--border); border-radius:22px; padding:clamp(20px,4vw,32px); box-shadow:0 24px 70px #0003; }
+  .q-meta { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:18px; }
+  .tag { color:#c8d5ff; background:#7c9cff18; border:1px solid #7c9cff3a; border-radius:8px; padding:6px 9px; font-size:12px; font-weight:700; }
+  .q-text { font-size:clamp(18px,3vw,23px); line-height:1.45; font-weight:700; margin:0 0 22px; }
+  .options { display:grid; gap:11px; }
+  .option { display:flex; align-items:center; gap:13px; width:100%; text-align:left; color:var(--text); background:#ffffff06; border:1px solid #ffffff17; border-radius:13px; padding:14px 15px; cursor:pointer; font:inherit; transition:transform .15s,border-color .15s,background .15s; }
+  .option:hover:not(:disabled) { border-color:#8ba6ff; background:#7c9cff12; transform:translateY(-1px); }
+  .letter { flex:0 0 30px; height:30px; display:grid; place-items:center; border-radius:9px; background:#ffffff0c; color:#b9c7e5; font-weight:800; font-size:13px; }
+  .option.correct { border-color:var(--green); background:#20c99718; }
+  .option.correct .letter { background:var(--green); color:#05281e; }
+  .option.wrong { border-color:var(--red); background:#ff657718; }
+  .option.wrong .letter { background:var(--red); color:#330710; }
+  .option:disabled { cursor:default; }
+  .feedback { display:none; margin-top:18px; border-radius:13px; padding:14px 16px; line-height:1.5; font-size:14px; }
+  .feedback.show { display:block; }
+  .feedback.good { background:#20c99715; border:1px solid #20c99766; color:#b9ffea; }
+  .feedback.bad { background:#ff657715; border:1px solid #ff657766; color:#ffd0d6; }
+  .actions { display:flex; justify-content:space-between; gap:12px; margin-top:24px; }
+  .btn { border:0; border-radius:12px; padding:12px 18px; font:inherit; font-weight:750; cursor:pointer; }
+  .btn:disabled { opacity:.35; cursor:not-allowed; }
+  .btn-secondary { color:#dce5ff; background:#ffffff0c; border:1px solid var(--border); }
+  .btn-primary { color:#081025; background:linear-gradient(135deg,#9db3ff,#b7a4ff); box-shadow:0 8px 24px #7c9cff25; }
+  .bottom-note { text-align:center; color:var(--muted); font-size:12px; margin-top:18px; }
+  .results { display:none; text-align:center; }
+  .results.show { display:block; }
+  .result-icon { width:76px;height:76px;border-radius:24px;display:grid;place-items:center;margin:0 auto 18px;font-size:34px;background:#20c99718;border:1px solid #20c99755; }
+  .result-score { font-size:clamp(38px,8vw,60px);font-weight:850;letter-spacing:-2px;margin:12px 0; }
+  .result-sub { color:var(--muted); line-height:1.6; }
+  .review { margin-top:24px;text-align:left; }
+  .review h3 { margin-bottom:12px; }
+  .review-item { padding:13px 14px; border:1px solid var(--border); border-radius:12px; margin:9px 0; background:#ffffff05; font-size:14px; line-height:1.5; }
+  .review-item strong { display:block; margin-bottom:4px; }
+  @media(max-width:560px) {
+    body { padding:18px 11px 28px; }
+    header { align-items:flex-start; }
+    .pill { display:none; }
+    .stats { gap:8px; }
+    .stat { padding:11px; }
+    .stat-value { font-size:18px; }
+    .card { border-radius:18px; }
+    .option { padding:12px; }
+    .actions .btn { padding:11px 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">⌘</div>
+      <div><h1>Computer Awareness</h1><div class="subtitle">Interactive MCQ Mock Test · Instant feedback</div></div>
+    </div>
+    <div class="pill">📝 36 Questions · Practice Mode</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">QUESTION</div><div class="stat-value" id="statQuestion">1 / 36</div></div>
+    <div class="stat"><div class="stat-label">CORRECT</div><div class="stat-value" id="statCorrect">0</div></div>
+    <div class="stat"><div class="stat-label">ACCURACY</div><div class="stat-value" id="statAccuracy">—</div></div>
+  </div>
+
+  <div class="progress-box">
+    <div class="progress-top"><span id="progressLabel">Your progress</span><span id="progressPercent">0%</span></div>
+    <div class="track"><div class="bar" id="progressBar"></div></div>
+  </div>
+
+  <main class="card" id="quizCard">
+    <div id="quizView">
+      <div class="q-meta"><span class="tag" id="topicTag">CPU Basics</span><span class="subtitle" id="answeredLabel">Choose one answer</span></div>
+      <h2 class="q-text" id="questionText"></h2>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="prevBtn">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>Next question →</button>
+      </div>
+    </div>
+    <div class="results" id="resultsView">
+      <div class="result-icon">🏁</div>
+      <div class="tag">TEST COMPLETED</div>
+      <h2>Great effort!</h2>
+      <div class="result-score" id="finalScore">0 / 36</div>
+      <div class="result-sub" id="resultSummary"></div>
+      <div class="actions" style="justify-content:center"><button class="btn btn-primary" id="restartBtn">↻ Restart mock test</button></div>
+      <div class="review" id="review"></div>
+    </div>
+  </main>
+  <div class="bottom-note">Tip: Select an option to instantly see whether it is correct. You can revisit answered questions.</div>
+</div>
+
+<script>
+const questions = [
+ {topic:"CPU Basics",q:"A CPU’s clock speed is commonly measured in which units?",options:["Gigahertz (GHz)","Megahertz (MHz)","Bits per second","Both 1 and 2"],answer:3,explain:"Clock frequency is measured in hertz, commonly MHz or GHz."},
+ {topic:"CPU Basics",q:"The unit used to express frequency, including CPU clock frequency, is:",options:["Gigabyte (GB)","Terabyte (TB)","Hertz (Hz)","Kilobyte (KB)"],answer:2,explain:"Hertz means cycles per second."},
+ {topic:"CPU Basics",q:"Processor speed is commonly advertised in:",options:["Mbps","MHz or GHz","Bytes per second","Pixels"],answer:1,explain:"Modern processor clock rates are usually expressed in GHz; older ones were often in MHz."},
+ {topic:"CPU Basics",q:"MIPS stands for:",options:["Memory Instructions Per System","Million Instructions Per Second","Microprocessor Input Processing Speed","Multiple Integrated Processor System"],answer:1,explain:"MIPS means Million Instructions Per Second, a measure of instruction throughput."},
+ {topic:"CPU Basics",q:"A processor's clock rate is usually measured in:",options:["Milliseconds","Microseconds","Megabytes or gigabytes","Megahertz or gigahertz"],answer:3,explain:"Clock rate is a frequency, measured in MHz or GHz."},
+ {topic:"CPU Basics",q:"For the same processor design, a higher clock frequency generally means:",options:["Fewer clock cycles per second","More clock cycles per second","No clock cycles","Less memory"],answer:1,explain:"A higher frequency means more clock cycles each second, though it does not alone determine overall performance."},
+ {topic:"CPU Basics",q:"Which language can a CPU execute directly?",options:["C source code","Machine language","Java source code","HTML"],answer:1,explain:"The CPU executes machine instructions. High-level languages must be compiled or interpreted."},
+ {topic:"CPU Basics",q:"Which unit is commonly used to express processor performance as instructions completed per second, in millions?",options:["MIPS","DPI","RPM","PPI"],answer:0,explain:"MIPS stands for Million Instructions Per Second."},
+ {topic:"CPU Components",q:"Which one is not normally listed as a core CPU component in basic computer studies?",options:["Arithmetic Logic Unit","Control Unit","Registers","Keyboard"],answer:3,explain:"A keyboard is an input device, not a CPU component."},
+ {topic:"Hardware",q:"The CPU is an example of:",options:["Software","Peripheral device","Hardware","An input/output device"],answer:2,explain:"The CPU is a physical electronic component, so it is hardware."},
+ {topic:"CPU Components",q:"Which CPU unit performs arithmetic and logical operations?",options:["ALU","Control Unit","RAM","Input/Output Unit"],answer:0,explain:"The Arithmetic Logic Unit performs arithmetic calculations and logical comparisons."},
+ {topic:"CPU Components",q:"Which unit performs addition, subtraction, multiplication and division?",options:["ALU","Control Unit","Input/Output Unit","Monitor"],answer:0,explain:"Arithmetic operations are performed by the ALU."},
+ {topic:"CPU Components",q:"What is a key function of the Control Unit?",options:["Directing and coordinating instruction execution","Displaying images","Permanently storing files","Printing documents"],answer:0,explain:"The Control Unit fetches/decodes instructions and coordinates operations across the computer."},
+ {topic:"CPU Components",q:"A logical unit in the CPU is primarily used to:",options:["Compare data and perform logical operations","Print documents","Generate electricity","Store files permanently"],answer:0,explain:"The ALU's logic circuitry performs comparisons and logical operations."},
+ {topic:"CPU Components",q:"Which register is commonly associated with holding intermediate arithmetic results?",options:["Accumulator","Program Counter","Instruction Register","Memory Address Register"],answer:0,explain:"The accumulator is used to hold results of arithmetic and logical operations in many CPU designs."},
+ {topic:"Digital Logic",q:"Which type of digital circuit uses previous state as well as current inputs?",options:["Combinational circuit","Sequential circuit","Arithmetic-only circuit","Decoder only"],answer:1,explain:"Sequential circuits have memory/state; their output depends on current inputs and prior state."},
+ {topic:"Data Transfer",q:"Which component can temporarily hold data to help manage differences in transfer speeds between devices?",options:["Buffer","Compiler","ALU only","Plotter"],answer:0,explain:"A buffer temporarily stores data while it moves between devices or processes of different speeds."},
+ {topic:"CPU Cycle",q:"Which of these is not normally one of the standard instruction-cycle stages?",options:["Fetch","Decode","Execute","Paint"],answer:3,explain:"A common simplified instruction cycle is fetch, decode and execute."},
+ {topic:"Processor Architecture",q:"Which processor architecture is traditionally associated with a complex instruction set?",options:["RISC","EPIC only","CISC","SIMD only"],answer:2,explain:"CISC stands for Complex Instruction Set Computer."},
+ {topic:"CPU Components",q:"In basic computer-awareness questions, the CPU is commonly described as having which main functional units?",options:["One","Two","Three","Seven"],answer:2,explain:"A common textbook model lists the ALU, Control Unit and register/memory unit."},
+ {topic:"ALU",q:"The ALU is commonly divided into which two functional sections?",options:["Arithmetic and logic","Input and output","Primary and secondary","Read and print"],answer:0,explain:"The ALU performs arithmetic operations and logical operations."},
+ {topic:"CPU Features",q:"Which statement about the CPU is correct?",options:["It is often called the brain of the computer","It processes instructions","It uses registers to hold working data","All of the above"],answer:3,explain:"All three statements describe common CPU roles."},
+ {topic:"ALU",q:"Which ALU section handles comparisons, matching and logical decisions?",options:["Arithmetic section","Logic section","Power supply","Storage cabinet"],answer:1,explain:"The logic section performs logical operations and comparisons."},
+ {topic:"Microprocessors",q:"The Intel 8086 has a 20-bit address bus, allowing it to address up to:",options:["16 KB","64 KB","1 MB","20 MB"],answer:2,explain:"A 20-bit address space has 2²⁰ byte addresses, or 1 MB."},
+ {topic:"Processor Architecture",q:"ARM processors became especially widely used in:",options:["Mobile and embedded devices","Only mainframes","Only supercomputers","Mechanical printers"],answer:0,explain:"ARM's power-efficient designs are widely used in phones and embedded systems."},
+ {topic:"Hardware",q:"The outer case that houses a desktop computer's internal components is called the:",options:["System unit/case","Inverter","UPS","Scanner"],answer:0,explain:"The system case houses components such as the motherboard, storage and power supply."},
+ {topic:"Hardware",q:"A computer/device that is not connected to a network is described as:",options:["Offline","Online","Cloud-hosted","Synchronized"],answer:0,explain:"Offline means not connected to a network or online service."},
+ {topic:"Power Supply",q:"Which component converts AC power into regulated DC power for computer components?",options:["Hard disk","Motherboard","SMPS / power supply unit","DVD drive"],answer:2,explain:"An SMPS (Switch-Mode Power Supply) provides regulated DC power."},
+ {topic:"ALU",q:"Which operations are typically associated with the ALU?",options:["Arithmetic calculations","Logical comparisons","Bitwise operations","All of the above"],answer:3,explain:"The ALU handles arithmetic and logical/bitwise operations; not every CPU has dedicated hardware for every advanced math function."},
+ {topic:"Memory",q:"Which type of memory is directly accessible by the CPU for currently running programs and data?",options:["Auxiliary storage only","Main memory (RAM)","DVD media only","Cloud storage"],answer:1,explain:"The CPU accesses main memory for active programs and data; caches and registers provide faster levels."},
+ {topic:"Processor Types",q:"A computer with one CPU/processor is called a:",options:["Uniprocessor system","Multiprocessor system","Multicomputer cluster","Multi-master system"],answer:0,explain:"A uniprocessor system has one processor."},
+ {topic:"Memory",q:"Which option is generally the fastest storage location among these?",options:["CPU registers","Cache memory","Main memory (RAM)","Hard disk"],answer:0,explain:"CPU registers are the smallest and fastest storage locations, followed by cache and RAM."},
+ {topic:"Registers",q:"Which register holds the address of a memory location to be accessed?",options:["MAR","PC","IR","MBR/MDR"],answer:0,explain:"MAR means Memory Address Register. MBR/MDR holds data being transferred."},
+ {topic:"Microprocessors",q:"Which chip is widely recognized as the first commercially available microprocessor?",options:["Cyrix 6x86","Intel 4004","Intel 8086","Pentium 4"],answer:1,explain:"Intel introduced the 4004 in 1971; it is widely recognized as the first commercial microprocessor."},
+ {topic:"Buses",q:"Which is not one of the three standard system bus categories taught in basic computer architecture?",options:["Address bus","Data bus","Control bus","Control bus"],answer:3,explain:"Address, data and control buses are the standard categories. This question is corrected to avoid an ambiguous option: see the explanation."},
+ {topic:"Processor Types",q:"Which is the simplest/earliest common CPU core arrangement among these?",options:["Triple-core","Single-core","Dual-core","Quad-core"],answer:1,explain:"A single-core processor has one processing core; multi-core designs contain two or more cores."}
+];
+
+let current = 0;
+let answers = Array(questions.length).fill(null);
+let locked = Array(questions.length).fill(false);
+const $ = id => document.getElementById(id);
+const letters = ["A","B","C","D","E"];
+
+function render() {
+  const q = questions[current];
+  $("quizView").style.display = "block";
+  $("resultsView").classList.remove("show");
+  $("statQuestion").textContent = `${current + 1} / ${questions.length}`;
+  $("statCorrect").textContent = answers.filter((a,i) => a === questions[i].answer).length;
+  const attempted = answers.filter(a => a !== null).length;
+  $("statAccuracy").textContent = attempted ? `${Math.round(answers.filter((a,i)=>a===questions[i].answer).length / attempted * 100)}%` : "—";
+  $("progressLabel").textContent = `${attempted} of ${questions.length} answered`;
+  $("progressPercent").textContent = `${Math.round(attempted / questions.length * 100)}%`;
+  $("progressBar").style.width = `${attempted / questions.length * 100}%`;
+  $("topicTag").textContent = q.topic;
+  $("questionText").textContent = `Q${current+1}. ${q.q}`;
+  $("answeredLabel").textContent = answers[current] === null ? "Choose one answer" : "Answer submitted";
+  $("options").innerHTML = "";
+  q.options.forEach((option, i) => {
+    const button = document.createElement("button");
+    button.className = "option";
+    button.type = "button";
+    button.innerHTML = `<span class="letter">${letters[i]}</span><span>${escapeHTML(option)}</span>`;
+    if (answers[current] !== null) {
+      button.disabled = true;
+      if (i === q.answer) button.classList.add("correct");
+      if (i === answers[current] && i !== q.answer) button.classList.add("wrong");
+    }
+    button.addEventListener("click", () => choose(i));
+    $("options").appendChild(button);
+  });
+  const feedback = $("feedback");
+  feedback.className = "feedback";
+  if (answers[current] !== null) {
+    const isCorrect = answers[current] === q.answer;
+    feedback.classList.add("show", isCorrect ? "good" : "bad");
+    feedback.innerHTML = `<strong>${isCorrect ? "✓ Correct!" : "✕ Incorrect."}</strong> Correct answer: <b>${letters[q.answer]}. ${escapeHTML(q.options[q.answer])}</b><br>${escapeHTML(q.explain)}`;
+  }
+  $("prevBtn").disabled = current === 0;
+  $("nextBtn").disabled = answers[current] === null;
+  $("nextBtn").textContent = current === questions.length - 1 ? "View results →" : "Next question →";
+}
+function choose(index) {
+  if (answers[current] !== null) return;
+  answers[current] = index;
+  render();
+}
+function next() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) { current++; render(); }
+  else showResults();
+}
+function previous() { if (current > 0) { current--; render(); } }
+function showResults() {
+  $("quizView").style.display = "none";
+  $("resultsView").classList.add("show");
+  const correct = answers.filter((a,i) => a === questions[i].answer).length;
+  const attempted = answers.filter(a => a !== null).length;
+  $("finalScore").textContent = `${correct} / ${questions.length}`;
+  $("resultSummary").textContent = `You answered ${attempted} of ${questions.length} questions. Accuracy: ${Math.round(correct / questions.length * 100)}%. Review your answers below and practise again to improve your score.`;
+  $("statQuestion").textContent = `${questions.length} / ${questions.length}`;
+  $("statCorrect").textContent = correct;
+  $("statAccuracy").textContent = `${Math.round(correct / questions.length * 100)}%`;
+  $("progressLabel").textContent = "Test completed";
+  $("progressPercent").textContent = "100%";
+  $("progressBar").style.width = "100%";
+  $("review").innerHTML = "<h3>Answer review</h3>" + questions.map((q,i) => {
+    const ok = answers[i] === q.answer;
+    return `<div class="review-item"><strong>${ok ? "✓" : "✕"} Q${i+1}. ${escapeHTML(q.q)}</strong>Your answer: ${answers[i] === null ? "Not answered" : escapeHTML(q.options[answers[i]])}<br>Correct answer: <b>${letters[q.answer]}. ${escapeHTML(q.options[q.answer])}</b></div>`;
+  }).join("");
+}
+function restart() { current = 0; answers = Array(questions.length).fill(null); locked = Array(questions.length).fill(false); render(); }
+function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+$("nextBtn").addEventListener("click", next);
+$("prevBtn").addEventListener("click", previous);
+$("restartBtn").addEventListener("click", restart);
+render();
+</script>
+</body>
+</html>
