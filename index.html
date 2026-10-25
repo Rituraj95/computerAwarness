@@ -3,228 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Computer Awareness</title>
-
+<meta name="theme-color" content="#eef2f7">
+<title>Computer Awareness | Mock Test Portal</title>
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
-
-    body {
-        background: #f4f7fb;
-        color: #1f2937;
-        min-height: 100vh;
-    }
-
-    /* Header */
-    header {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        color: white;
-        padding: 20px 7%;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-    }
-
-    header h2 {
-        font-size: 21px;
-        font-weight: 600;
-    }
-
-    /* Main Container */
-    .container {
-        width: 90%;
-        max-width: 1050px;
-        margin: 45px auto;
-    }
-
-    /* Heading */
-    .heading {
-        margin-bottom: 28px;
-    }
-
-    .heading h1 {
-        font-size: 30px;
-        margin-bottom: 8px;
-        color: #111827;
-    }
-
-    .heading p {
-        color: #6b7280;
-        font-size: 15px;
-    }
-
-    /* Topic Grid */
-    .topics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-    }
-
-    /* Test Card */
-    .full-test {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        transition: 0.25s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .full-test::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #2563eb, #60a5fa);
-    }
-
-    .full-test:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
-        border-color: #bfdbfe;
-    }
-
-    /* Icon */
-    .test-icon {
-        width: 52px;
-        height: 52px;
-        background: #eff6ff;
-        color: #2563eb;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-        margin-bottom: 18px;
-    }
-
-    .full-test h2 {
-        font-size: 20px;
-        margin-bottom: 9px;
-        color: #111827;
-    }
-
-    .full-test p {
-        color: #6b7280;
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    /* Button */
-    .full-test a {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #2563eb;
-        color: white;
-        text-decoration: none;
-        padding: 11px 17px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.2s ease;
-    }
-
-    .full-test a:hover {
-        background: #1d4ed8;
-        transform: translateX(2px);
-    }
-
-    /* Footer */
-    footer {
-        text-align: center;
-        color: #9ca3af;
-        font-size: 13px;
-        padding: 35px 20px;
-        margin-top: 40px;
-    }
-
-    /* Mobile */
-    @media (max-width: 600px) {
-
-        header {
-            padding: 17px 5%;
-        }
-
-        header h2 {
-            font-size: 19px;
-        }
-
-        .container {
-            width: 92%;
-            margin: 30px auto;
-        }
-
-        .heading h1 {
-            font-size: 24px;
-        }
-
-        .heading p {
-            font-size: 14px;
-        }
-
-        .full-test {
-            padding: 22px;
-        }
-    }
+  :root {
+    /* Standard neutral slate background with blue accents */
+    --page: #eef2f7;
+    --surface: #f8fafc;
+    --card: #f9fbfd;
+    --primary: #315ea8;
+    --primary-hover: #244b8c;
+    --primary-soft: #e3eaf5;
+    --text: #263244;
+    --muted: #657286;
+    --border: #d5dde8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh; display: flex; flex-direction: column;
+    background: var(--page); color: var(--text);
+    font-family: Arial, Helvetica, sans-serif; line-height: 1.5;
+  }
+  .site-header {
+    background: #e4eaf2;
+    border-bottom: 1px solid #d1d9e5;
+    box-shadow: 0 2px 8px rgba(38,50,68,.04);
+  }
+  .nav {
+    width: min(1120px, 92%); min-height: 72px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark {
+    display: grid; place-items: center; width: 42px; height: 42px;
+    border-radius: 10px; background: var(--primary); color: #fff; font-size: 21px;
+  }
+  .brand-name { display: block; font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
+  .brand-caption { display: block; margin-top: 1px; color: var(--muted); font-size: 12px; }
+  .nav-label {
+    padding: 8px 12px; border-radius: 7px; background: #d5dfef;
+    color: #294b7f; font-size: 12px; font-weight: 700; letter-spacing: .3px;
+  }
+  main { width: min(1120px, 92%); margin: 0 auto; flex: 1; padding: 50px 0 62px; }
+  .intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
+  .section-label { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  h1 { color: #202b3b; font-size: clamp(27px, 4vw, 35px); line-height: 1.2; letter-spacing: -.8px; margin-bottom: 10px; }
+  .intro p { max-width: 650px; color: var(--muted); font-size: 15px; }
+  .topic-count {
+    display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0;
+    padding: 10px 13px; border: 1px solid #d1dae7; border-radius: 8px;
+    background: #e3e9f1; color: #475467; font-size: 13px;
+  }
+  .topic-count strong { color: var(--text); }
+  .section-heading { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 16px; }
+  .section-heading h2 { font-size: 18px; font-weight: 700; }
+  .section-heading span { color: var(--muted); font-size: 13px; }
+  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .topic-card {
+    position: relative; display: flex; flex-direction: column; min-height: 275px;
+    padding: 25px; overflow: hidden; background: var(--card);
+    border: 1px solid var(--border); border-radius: 13px;
+    box-shadow: 0 3px 9px rgba(38,50,68,.045);
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .topic-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--primary); }
+  .topic-card:hover { transform: translateY(-3px); border-color: #aabbd5; box-shadow: 0 9px 22px rgba(38,50,68,.09); }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+  .topic-icon {
+    width: 50px; height: 50px; display: grid; place-items: center; border-radius: 10px;
+    background: var(--primary-soft); color: var(--primary); font-size: 24px;
+    border: 1px solid #d1dced;
+  }
+  .topic-number { color: #758196; font-size: 12px; font-weight: 700; letter-spacing: .5px; }
+  .topic-card h3 { color: #202b3b; font-size: 20px; margin-bottom: 8px; }
+  .topic-card p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 22px; }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: auto; padding-top: 17px; border-top: 1px solid #e0e6ee;
+  }
+  .topic-type { color: #687589; font-size: 12px; }
+  .start-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    min-height: 41px; padding: 10px 15px; border-radius: 7px;
+    background: var(--primary); color: #fff; text-decoration: none;
+    font-size: 13px; font-weight: 700; white-space: nowrap; transition: background .18s ease;
+  }
+  .start-button:hover { background: var(--primary-hover); }
+  .start-button:focus-visible { outline: 3px solid #8ca8d5; outline-offset: 3px; }
+  .arrow { font-size: 17px; line-height: 1; }
+  .study-note {
+    display: flex; align-items: flex-start; gap: 12px; margin-top: 24px; padding: 16px 18px;
+    background: #e2e9f3; border: 1px solid #ccd8e8; border-radius: 9px;
+    color: #455874; font-size: 13px;
+  }
+  .study-note strong { display: block; color: #2c4569; margin-bottom: 2px; }
+  .note-icon { font-size: 18px; }
+  footer { background: #e4eaf2; border-top: 1px solid #d1d9e5; padding: 20px 4%; color: #6d7889; text-align: center; font-size: 12px; }
+  @media (max-width: 680px) {
+    .nav { min-height: 65px; }
+    main { padding: 35px 0 44px; }
+    .intro { display: block; }
+    .topic-count { margin-top: 17px; }
+    .topic-grid { grid-template-columns: 1fr; gap: 15px; }
+    .topic-card { min-height: 250px; padding: 22px; }
+    .section-heading { margin-top: 27px; }
+  }
+  @media (max-width: 380px) {
+    .nav-label { display: none; }
+    .card-footer { align-items: stretch; flex-direction: column; }
+    .start-button { width: 100%; }
+    .section-heading span { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
-
 <body>
-
-<header>
-    <h2>💻 Computer Awareness</h2>
+<header class="site-header">
+  <nav class="nav" aria-label="Main navigation">
+    <a class="brand" href="#" aria-label="Computer Awareness home">
+      <span class="brand-mark" aria-hidden="true">▣</span>
+      <span>
+        <span class="brand-name">Computer Awareness</span>
+        <span class="brand-caption">Competitive Exam Practice</span>
+      </span>
+    </a>
+    <span class="nav-label">MOCK TEST PORTAL</span>
+  </nav>
 </header>
-
-<div class="container">
-
-    <div class="heading">
-        <h1>Computer Awareness Mock Tests</h1>
-        <p>Select a topic and start practicing.</p>
+<main>
+  <section class="intro">
+    <div>
+      <div class="section-label">Your learning dashboard</div>
+      <h1>Computer Awareness Mock Tests</h1>
+      <p>Choose a topic below and practise important computer awareness questions for competitive examinations.</p>
     </div>
-
-    <div class="topics">
-
-        <div class="full-test">
-
-            <div class="test-icon">
-                💻
-            </div>
-
-            <h2>Computer History</h2>
-
-          
-
-            <a href="computerhistory1.html">
-                Start Test →
-            </a>
-   <h2>Computer History</h2>
-
-          
-
-            <a href="computerhistory1.html">
-                Start Test →
-            </a>
-        </div>
-
-         
-
-
-    </div>
-
-</div>
-
-<footer>
-    Computer Awareness © 2026
-</footer>
-
+    <div class="topic-count"><span aria-hidden="true">📚</span><strong>2</strong> available topics</div>
+  </section>
+  <div class="section-heading">
+    <h2>Choose a test</h2>
+    <span>Select a topic to begin practising</span>
+  </div>
+  <section class="topic-grid" aria-label="Available mock tests">
+    <article class="topic-card">
+      <div class="card-top">
+        <div class="topic-icon" aria-hidden="true">🖥️</div>
+        <span class="topic-number">TOPIC 01</span>
+      </div>
+      <h3>Computer History</h3>
+      <p>Explore computer generations, early computing devices, important inventors, and the evolution of computer technology.</p>
+      <div class="card-footer">
+        <span class="topic-type">Computer fundamentals</span>
+        <a class="start-button" href="computerhistory1.html">Start Test <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="topic-card">
+      <div class="card-top">
+        <div class="topic-icon" aria-hidden="true">🧠</div>
+        <span class="topic-number">TOPIC 02</span>
+      </div>
+      <h3>Memory Section</h3>
+      <p>Practise questions on RAM, ROM, cache, registers, primary and secondary memory, and storage devices.</p>
+      <div class="card-footer">
+        <span class="topic-type">Memory &amp; storage</span>
+        <a class="start-button" href="memory.html">Start Test <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </section>
+  <aside class="study-note">
+    <span class="note-icon" aria-hidden="true">💡</span>
+    <div><strong>Study tip</strong>Try each topic more than once and review the questions you get wrong to strengthen your preparation.</div>
+  </aside>
+</main>
+<footer>Computer Awareness © 2026 <span aria-hidden="true">·</span> Keep learning, keep improving.</footer>
 </body>
 </html>
